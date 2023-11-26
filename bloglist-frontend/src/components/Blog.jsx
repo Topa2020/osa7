@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { like, remove } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const blogStyle = {
   paddingTop: 10,
@@ -9,8 +12,25 @@ const blogStyle = {
   marginBottom: 5
 }
 
-const Blog = ({ blog, addLike, removeBlog, user }) => {
+const Blog = ({ blog, user }) => {
   const [allInfo, setAllInfo] = useState(false)
+  const dispatch = useDispatch()
+
+  const blogs = useSelector(state => state.blogs)
+
+  const addLike = (blogId) => {
+    const blogToChange = blogs.find(b => b.id === blogId)
+    dispatch(like(blogId))
+    dispatch(setNotification(`you liked blog: ${blogToChange.title} by ${blogToChange.author}`, '', 4))
+  }
+
+  const removeB = (id) => {
+    const blogToRemove = blogs.find((n) => n.id === id)
+    if (window.confirm(`Remove blog ${blogToRemove.title}, by ${blogToRemove.author}`)) {
+      dispatch(remove(id))
+      dispatch(setNotification(`Blog ${blogToRemove.title} was removed`,'', 4))
+    }
+  }
 
   return (
     <div style={blogStyle} className="blog">
@@ -29,7 +49,7 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
           </button>
           <p>{blog.user.name}</p>
           {user.username === blog.user.username && (
-            <button onClick={() => removeBlog(blog.id)}>remove</button>
+            <button onClick={() => removeB(blog.id)}>remove</button>
           )}
         </div>
       ) : null}
