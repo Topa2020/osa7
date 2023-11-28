@@ -39,7 +39,6 @@ const App = () => {
       <div>
         <div style={hideWhenVisible}>
           <LoginForm />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
         </div>
       </div>
     )

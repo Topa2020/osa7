@@ -27,8 +27,7 @@ const Blog = ({ blog, user }) => {
   const removeB = (id) => {
     const blogToRemove = blogs.find((n) => n.id === id)
     if (window.confirm(`Remove blog ${blogToRemove.title}, by ${blogToRemove.author}`)) {
-      dispatch(remove(id))
-      dispatch(setNotification(`Blog ${blogToRemove.title} was removed`,'', 4))
+      dispatch(remove(id, blogToRemove.title))
     }
   }
 
